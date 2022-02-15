@@ -1,10 +1,8 @@
 const Sequelize = require('sequelize');
 const User = require('./user')
-// const Sequelize = require('sequelize');
-// const User = require('./user')
+
 const env = process.env.NODE_ENV || 'development';
-// config는 언제 쓰는 걸까?
-const config = require(__dirname + '/../config/config')[env]
+const config = require('../config/config')[env] // __dirname + 
 const db = {}
 
 // ↓ 시퀄라이즈 새로 쳐준다
@@ -18,7 +16,9 @@ const sequelize = new Sequelize(
 
 // 연결 객체를 나중에 재사용하기 위해 db.sequelize에 추가 
 db.sequelize = sequelize;
-db.User = User; // db라는 객체에 User 모델 추가
+
+// db라는 객체에 User 모델 추가
+db.User = User; 
 
 // 모델의 static.init 메서드를 호출
 User.init(sequelize);
