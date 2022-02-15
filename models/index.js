@@ -1,49 +1,30 @@
 const Sequelize = require('sequelize');
+const User = require('./user')
+// const Sequelize = require('sequelize');
+// const User = require('./user')
 const env = process.env.NODE_ENV || 'development';
-//↓ 시퀄라이즈 새로 쳐준다.
+// config는 언제 쓰는 걸까?
+const config = require(__dirname + '/../config/config')[env]
+const db = {}
+
+// ↓ 시퀄라이즈 새로 쳐준다
+// new Seq...를 통해 DB 연결 객체를 생성한다.
 const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
   config
 )
+
+// 연결 객체를 나중에 재사용하기 위해 db.sequelize에 추가 
 db.sequelize = sequelize;
+db.User = User; // db라는 객체에 User 모델 추가
+
+// 모델의 static.init 메서드를 호출
+User.init(sequelize);
+
+// 다른 테이블과의 관계 연결하는 associate 메서드 실행
+// User.associate(db);
+
+// 앞으로 db 객체를 require하여 User 모델에 접근 가능
 module.exports = db;
-
-// 'use strict';
-
-// const fs = require('fs');
-// const path = require('path');
-// const Sequelize = require('sequelize');
-// const basename = path.basename(__filename);
-// const env = process.env.NODE_ENV || 'development';
-// const config = require(__dirname + '/../config/config.json')[env];
-// const db = {};
-
-// let sequelize;
-// if (config.use_env_variable) {
-//   sequelize = new Sequelize(process.env[config.use_env_variable], config);
-// } else {
-//   sequelize = new Sequelize(config.database, config.username, config.password, config);
-// }
-
-// fs
-//   .readdirSync(__dirname)
-//   .filter(file => {
-//     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-//   })
-//   .forEach(file => {
-//     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-//     db[model.name] = model;
-//   });
-
-// Object.keys(db).forEach(modelName => {
-//   if (db[modelName].associate) {
-//     db[modelName].associate(db);
-//   }
-// });
-
-// db.sequelize = sequelize;
-// db.Sequelize = Sequelize;
-
-// module.exports = db;
