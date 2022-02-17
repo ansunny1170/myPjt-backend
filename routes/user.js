@@ -32,5 +32,45 @@ router.route('/')
       next(err)
     }
   })
+router.route('/:id')
+  .get(async (req, res, next) => {
+    try {
+      const user = await User.findByPk(req.params.id)
+      res.json(user)
+    } catch(err) {
+      console.error(err)
+      next(err)
+    }
+  })
+  .patch(async (req, res, next) => {
+    try {
+      const { userid, name, birth, sex, phone, email, password } = req.body
+      const user = await User.update({
+        userid,
+        name,
+        birth,
+        sex,
+        phone,
+        email,
+        password
+      }, {
+        where: { id: req.params.id }
+      })
+      res.json(user)
+      // res.status(201).json(user)
+    } catch(err) {
+      console.error(err)
+      next(err)
+    }
+  })
+  .delete(async (req, res, next) => {
+    try {
+      const user = await User.destroy({where: { id: req.params.id }})
+      res.json(user)
+    } catch(err) {
+      console.error(err)
+      next(err)
+    }
+  })
 
-  module.exports = router
+module.exports = router

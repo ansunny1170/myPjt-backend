@@ -5,7 +5,8 @@ const router = express.Router()
 
 router.get('/', async (req, res, next) => {
   try {
-    const user = await User.findAll()
+    // const user = await User.findAll()
+    res.send('Hello myPjt server')
   } catch(err) {
     console.error(err)
     next(err)
